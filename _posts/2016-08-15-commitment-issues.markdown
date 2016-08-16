@@ -84,7 +84,7 @@ git log --oneline --abbrev-commit --all --graph --decorate --color
 {% endhighlight %}
 
 
-You can see where the branches diverge and come together. This is a simple example, but this visual would be even more helpful for a more complex project with multiple branches. Try this in your terminal for a more colorful depiction.
+You can see where the branches diverge and come together. This is a simple example, but this visual would be even more helpful for a more complex project with multiple branches.
 
 
 If I could turn back time
