@@ -5,5 +5,7 @@ description: learning to code one error message at a time
 permalink: /:year/:month/:day/:title/
 paginate: 10
 
+disqus_shortname: crafting-code
+
 gems: [jekyll-paginate]
 exclude: ['README.md', 'Gemfile.lock', 'Gemfile', 'Rakefile']

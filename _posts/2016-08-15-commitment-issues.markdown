@@ -3,6 +3,7 @@ layout: post
 title:  "Commitment Issues"
 date:   2016-08-02 17:06:25
 categories: code
+comments: true
 ---
 
 If you're British, you were probably first familiar with 'git' as an 'unpleasant or contemptible person'. Otherwise, you're probably familiar with Git as the version control system developed by Linus Torvalds, the creator of Linux. As much as I enjoy discussing British insults, I'm going to focus this blog post on the latter case.
