@@ -5,8 +5,7 @@ date:   2016-08-02 17:06:25
 categories: code
 ---
 
-
-{{< figure src="/img/white-rabbit.jpg" caption="Down the debugging rabbit hole" alt="white rabbit">}}
+<img src="/images/white-rabbit.jpg" class="right" caption="Down the debugging rabbit hole" />
 
 Error messages are a little intimidating as a code newbie, but an important step is learning to embrace them. I’m learning with each error, and there’s nothing like the feeling of successfully debugging your code.
 
@@ -19,15 +18,21 @@ At first glance, <code>#gets</code> seems to be a very straightforward method, a
 
 Let’s give a simple example:
 
-    puts "Hello, what is your name?"
-    name = gets.chomp
-    puts "Hello #{name}!"
+{% highlight ruby %}
+puts "Hello, what is your name?"
+name = gets.chomp
+puts "Hello #{name}!"
+{% endhighlight %}
 
 I’ll be asked for my name, enter it, and the terminal will output “Hello Alice!”
 
 So far, so good. Easy, right? I didn’t really give much thought to what was going on under the hood until that strange error yesterday:
 
-    jukebox.rb:29:in 'gets': No such file or directory @ rb_sysopen - --format (Errno::ENOENT)
+{% highlight ruby %}
+jukebox.rb:29:in 'gets': No such file or directory
+@ rb_sysopen ---format (Errno::ENOENT)
+{% endhighlight %}
+
 
 Clearly there is something strange going on with gets here, but beyond that I don’t have much of a clue. A few minutes googling and experimenting and I came up with a couple of answers on stackoverflow and ruby-forum.com. A couple of solutions were offered:
 
@@ -56,21 +61,3 @@ My best guess is that since my error disappears if I use <code>ARGV.clear</code>
 The <code>#gets</code> method that I want always read from the I/O stream (taking in the input from the user). Therefore, I can eliminate this error, by using <code>IO::gets</code> instead of <code>Kernel::gets</code>. I can specify this by using <code>$stdin.gets</code> (just as my original googling revealed!).
 
 *I hope you've enjoyed my trip down the debugging rabbit hole! if you ever encountered this problem before, or have any information to share about <code>gets</code>, be sure to post a comment below!*
-
-You'll find this post in your `_posts` directory - edit this post and re-build (or run with the `-w` switch) to see your changes!
-To add new posts, simply add a file in the `_posts` directory that follows the convention: YYYY-MM-DD-name-of-post.ext.
-
-Jekyll also offers powerful support for code snippets:
-
-{% highlight ruby %}
-def print_hi(name)
-  puts "Hi, #{name}"
-end
-print_hi('Tom')
-#=> prints 'Hi, Tom' to STDOUT.
-{% endhighlight %}
-
-Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll's GitHub repo][jekyll-gh].
-
-[jekyll-gh]: https://github.com/mojombo/jekyll
-[jekyll]:    http://jekyllrb.com
