@@ -3,7 +3,7 @@
 <head>
 
   <meta charset="UTF-8">
-  <title>Crafting COde</title>
+  <title>Commitment Issues</title>
   <meta name="viewport" content="width=device-width">
 
   <!--[if lt IE 9]>
@@ -45,15 +45,13 @@
 
 
     <div id="content">
-      
+      <article class="post">
 
-	<article class="post">
+	
+		<h1><a href="/2016/08/02/commitment-issues/">Commitment Issues</a></h1>
+	
 
-		
-			<h1><a href="/2016/08/02/commitment-issues/">Commitment Issues</a></h1>
-		
-
-		<div class="post-content"><p>If you’re British, you were probably first familiar with ‘git’ as an ‘unpleasant or contemptible person’. Otherwise, you’re probably familiar with Git as the version control system developed by Linus Torvalds, the creator of Linux. As much as I enjoy discussing British insults, I’m going to focus this blog post on the latter case.</p>
+	<div class="post-content"><p>If you’re British, you were probably first familiar with ‘git’ as an ‘unpleasant or contemptible person’. Otherwise, you’re probably familiar with Git as the version control system developed by Linus Torvalds, the creator of Linux. As much as I enjoy discussing British insults, I’m going to focus this blog post on the latter case.</p>
 
 <p>Git is an incredibly helpful tool for developers, and most code newbies become familiar with the tool fairly early on. The basic git workflow is pretty straightforward:</p>
 
@@ -143,81 +141,9 @@
 <p><em>This is barely the tip of the iceberg when it comes to Git’s functionality. I hope to dive in again in a future blog post, so leave me your favorite resources (and your preferred Git pun for the next title)!</em></p>
 </div>
 
-	</article>
+	<p class="meta">Posted on <span class="postdate">Aug 02, 2016</span></p>
 
-
-
-	<article class="post">
-
-		
-			<h1><a href="/2016/08/02/down-the-rabbit-hole/">Down the Rabbit Hole</a></h1>
-		
-
-		<div class="post-content"><p><img src="/images/white-rabbit.jpg" class="right" caption="Down the debugging rabbit hole" /></p>
-
-<p>Error messages are a little intimidating as a code newbie, but an important step is learning to embrace them. I’m learning with each error, and there’s nothing like the feeling of successfully debugging your code.</p>
-
-<p>I ran across an interesting error yesterday, and I thought I would begin my inaugural blog post by digging into it. I was writing a simple program that require input from a user, using gets.</p>
-
-<h2 id="gets--simple-">#gets == simple ?</h2>
-
-<p>At first glance, <code>#gets</code> seems to be a very straightforward method, allowing you to save something that a user inputs at the command line.  It was one of the very first Ruby methods that I learned. I thought it was pretty cool — it immediately adds interactivity, and made me feel like I was actually creating something dynamic.</p>
-
-<p>Let’s give a simple example:</p>
-
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="nb">puts</span> <span class="s2">"Hello, what is your name?"</span>
-<span class="nb">name</span> <span class="o">=</span> <span class="nb">gets</span><span class="p">.</span><span class="nf">chomp</span>
-<span class="nb">puts</span> <span class="s2">"Hello </span><span class="si">#{</span><span class="nb">name</span><span class="si">}</span><span class="s2">!"</span></code></pre></figure>
-
-<p>I’ll be asked for my name, enter it, and the terminal will output “Hello Alice!”</p>
-
-<p>So far, so good. Easy, right? I didn’t really give much thought to what was going on under the hood until that strange error yesterday:</p>
-
-<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">jukebox</span><span class="p">.</span><span class="nf">rb</span><span class="p">:</span><span class="mi">29</span><span class="ss">:in</span> <span class="s1">'gets'</span><span class="p">:</span> <span class="no">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span>
-<span class="err">@</span> <span class="n">rb_sysopen</span> <span class="o">---</span><span class="nb">format</span> <span class="p">(</span><span class="no">Errno</span><span class="o">::</span><span class="no">ENOENT</span><span class="p">)</span></code></pre></figure>
-
-<p>Clearly there is something strange going on with gets here, but beyond that I don’t have much of a clue. A few minutes googling and experimenting and I came up with a couple of answers on stackoverflow and ruby-forum.com. A couple of solutions were offered:</p>
-
-<ul>
-  <li>using <code>$stdin.gets</code> instead of <code>gets</code></li>
-  <li>adding ARGV.clear on the line before <code>gets.chomp</code></li>
-</ul>
-
-<p>Both of those worked for me, and my code was running smoothly! It’s pretty tempting at this point to give myself an internal high five and move on, but I’m going to try and dig in a little further.</p>
-
-<h2 id="a-closer-look-at-gets">A closer look at #gets</h2>
-
-<p>What happens when you call <code>#gets</code>? If you search Ruby Docs, you’ll find two separate methods, one from the <code>Kernel</code> class, and one from the <code>IO</code> class. Let’s have a look at excerpts of the two definitions:</p>
-
-<blockquote>
-  <p><code>Kernel::gets</code></p>
-
-  <p>Returns (and assigns to $_) the next line from the list of files in ARGV (or $*), or from standard input if no files are present on the command &gt;line.</p>
-</blockquote>
-
-<blockquote>
-  <p><code>IO::gets</code></p>
-
-  <p>Reads the next “line” from the I/O stream</p>
-</blockquote>
-
-<p><code>ARGV</code> sounds familiar from the second solution I found – now what is it? <code>ARGV</code> is a constant that stores the values input to a program via the command line. (For more information, see Joe O’Conor’s <a href="http://jnoconor.github.io/blog/2013/10/13/a-short-explanation-of-argv/">helpful blog post</a>.) If it is empty, <code>Kernel::gets</code> will read from the standard input.</p>
-
-<p>My best guess is that since my error disappears if I use <code>ARGV.clear</code> before <code>gets.chomp</code>, the issue lies in some value formerly input to the command line remaining in <code>ARGV</code>, and preventing <code>gets</code> from automatically returning the next line from the standard input. I am therefore using the first <code>gets</code>, from the <code>Kernel</code> class.</p>
-
-<p>The <code>#gets</code> method that I want always read from the I/O stream (taking in the input from the user). Therefore, I can eliminate this error, by using <code>IO::gets</code> instead of <code>Kernel::gets</code>. I can specify this by using <code>$stdin.gets</code> (just as my original googling revealed!).</p>
-
-<p><em>I hope you’ve enjoyed my trip down the debugging rabbit hole! if you ever encountered this problem before, or have any information to share about <code>gets</code>, be sure to post a comment below!</em></p>
-</div>
-
-	</article>
-
-
-
-
-
-
-
+</article>
     </div>
 
 
