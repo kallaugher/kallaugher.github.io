@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="UTF-8">
+  <title>Rails Magic: Nested Forms and the Build Method</title>
+  <meta name="viewport" content="width=device-width">
+
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="/assets/css/style.css" rel="stylesheet" />
+  <link href="/assets/css/colors-dark.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+
+
+  <header id="header">
+    <h1><a href="/"><i class="icon-sun"></i> Crafting Code</a></h1>
+    <p>learning to code one error message at a time</p>
+  </header>
+
+
+
+  <div id="page">
+
+
+
+    <div id="sidebar">
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/archives">Archive</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="http://twitter.com/kallaugher">Twitter</a></li>
+          <li><a href="/feed.xml">RSS Feed</a></li>
+        </ul>
+      </nav>
+    </div>
+
+
+
+    <div id="content">
+      <article class="post">
+
+	
+		<h1><a href="/2016/08/26/built-this-city/">Rails Magic: Nested Forms and the Build Method</a></h1>
+	
+
+	<div class="post-content"><p>In this post, I’m going to take a look at nested forms in Rails, and in particular a closer look at a small, but useful method provided by ActiveRecord: the <code>build</code> method.</p>
+
+<p>Imagine we’re building a basic blogging app in Rails, with users, posts and tags. We need a form to allow users to submit a new post. Rails has a number of useful helpers for creating forms. In this case, because <code>Post</code> is a model, the logical form helper to use is <code>form_for</code> – it binds a form to a model object, instead of having to repeat the object multiple times.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">//</span> <span class="n">app</span><span class="o">/</span><span class="n">views</span><span class="o">/</span><span class="n">posts</span><span class="o">/</span><span class="kp">new</span><span class="p">.</span><span class="nf">html</span><span class="p">.</span><span class="nf">erb</span>
+
+<span class="o">&lt;</span><span class="sx">%= form_for @post do |f| %&gt;
+
+	&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">hidden_field</span> <span class="ss">:user_id</span><span class="p">,</span> <span class="ss">value: </span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span> <span class="sx">%&gt;
+
+	&lt;%= f.label :title %&gt;</span>
+	<span class="o">&lt;</span><span class="sx">%= f.text_field :title %&gt;&lt;br&gt;&lt;br&gt;
+
+	&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:content</span> <span class="o">%&gt;</span>
+	<span class="o">&lt;</span><span class="sx">%= f.text_field :content %&gt;&lt;br&gt;&lt;br&gt;
+
+	&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">submit</span> <span class="sx">%&gt;
+
+&lt;% end %&gt;</span></code></pre></figure>
+
+<p>This will create a simple form with two fields - one for title, and one for content, as well as a hidden field that associated the current user with their post. So far, so good. But we still want to add tags for each post. Let’s have a look at the associations for each of the three models:</p>
+
+<ul>
+  <li>a User has many Posts</li>
+  <li>a Post belongs to a User</li>
+  <li>a Post has many Tags</li>
+  <li>a Tag has many Posts</li>
+</ul>
+
+<p>With the has_many relationship between Posts and Tags going both ways, we’ll need a join table. We’ll therefore express the relationship between them as follows:</p>
+
+<ul>
+  <li>a Post has many Post_Tags</li>
+  <li>a Post has many Tags, through Post_Tags</li>
+  <li>a Tag has many Post_Tags</li>
+  <li>a Tag has many Posts, throught Post_Tags</li>
+</ul>
+
+<p>This association between tags and posts makes adding tags to the form slightly more complicated. When we add tags, they are by definition associated with the post that is being created with the form above. Therefore, instead of creating a separate <code>form_for</code> for tags, we want to nest an additional form inside the post <code>form_for</code>, one that will maintain the relationship between posts and tags.</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="o">&lt;</span><span class="sx">%= form_for @post do |f| %&gt;
+	&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">hidden_field</span> <span class="ss">:user_id</span><span class="p">,</span> <span class="ss">value: </span><span class="n">current_user</span><span class="p">.</span><span class="nf">id</span> <span class="sx">%&gt;
+
+	&lt;%= f.label :title %&gt;</span>
+	<span class="o">&lt;</span><span class="sx">%= f.text_field :title %&gt;&lt;br&gt;&lt;br&gt;
+
+	&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:content</span> <span class="o">%&gt;</span>
+	<span class="o">&lt;</span><span class="sx">%= f.text_field :content %&gt;&lt;br&gt;&lt;br&gt;
+
+	&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">collection_check_boxes</span> <span class="ss">:tag_ids</span><span class="p">,</span> <span class="no">Tag</span><span class="p">.</span><span class="nf">all</span><span class="p">,</span> <span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span> <span class="o">%&gt;&lt;</span><span class="n">br</span><span class="o">&gt;</span>
+
+    <span class="o">&lt;</span><span class="sx">%= f.fields_for :tags, @post.tags.build do |tags_attributes| %&gt;
+      &lt;%=</span> <span class="n">tags_attributes</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:name</span>  <span class="o">%&gt;</span>
+      <span class="o">&lt;</span><span class="sx">%= tags_attributes.text_field :name %&gt;
+    &lt;% end %&gt;
+
+	&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">submit</span> <span class="sx">%&gt;
+&lt;% end %&gt;</span></code></pre></figure>
+
+<p><code>collection_check_boxes</code> will iterate through the array <code>Tag.all</code>, and create a checkbox for each existing tag. These tags already exist, and if their checkbox is selected, will be associated with the post being created as well. For more details, see the <a href="http://apidock.com/rails/v4.0.2/ActionView/Helpers/FormOptionsHelper/collection_check_boxes">APIdock documentation</a>.</p>
+
+<p>The <code>fields_for</code> form helper provides a field for creating a new tag. This is where the elusive <code>build</code> method comes into play. If this were a separate <code>form_for</code> for just the tags, you could define <code>@tag = Tag.new in the Tags controller, and the values from the form would populate that object. However, if we used <code>Tag.new</code> in this case, there would be no association between the tag and the newly created post.</code></p>
+
+<p>The <code>build</code> method provides the same functionality as <code>.new</code> would, but instantiates with the defined association. For example, <code>@post.tags.build</code> instantiates a <code>Tag</code> object that is already associated with <code>@post</code>. Just like <code>.new</code>, the object has not been saved to the database.</p>
+
+<p>Cementing the similarities with <code>.new</code>, <code>build</code> is an alias for <code>ActiveRecord::Relation#new</code> – it is simply <code>.new</code> with relations baked in.</p>
+
+<p>Back to my example – if I wanted multiple blank form fields for adding multiple tags at once, I can simply run <code>.build</code> multiple times, and for each instantiated object, a new field will appear. Once you’re using .build more than once, it is probably easier and simpler to move this to the post controller.</p>
+
+<p>The <code>new.html.erb</code> will have the following snippet of code:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="o">&lt;</span><span class="sx">%= f.fields_for :tags do |tags_attributes| %&gt;
+	&lt;%=</span> <span class="n">tags_attributes</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:name</span>  <span class="o">%&gt;</span>
+   <span class="o">&lt;</span><span class="sx">%= tags_attributes.text_field :name %&gt;
+&lt;% end %&gt;</span></code></pre></figure>
+
+<p>The controller will have:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">new</span>
+	<span class="vi">@post</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">new</span>
+   	<span class="mi">3</span><span class="p">.</span><span class="nf">times</span> <span class="p">{</span><span class="vi">@post</span><span class="p">.</span><span class="nf">tags</span><span class="p">.</span><span class="nf">build</span><span class="p">}</span>
+<span class="k">end</span></code></pre></figure>
+
+<p>This will create blank form fields for our additional tags, and three correctly associated (but unsaved) tag objects, ready to be populated with the form answers.</p>
+
+<h2 id="hasone-relationships">Has_one relationships</h2>
+
+<p>One additional note: if you use <code>build</code> with a has_one association, the syntax is slightly different. For example, if each post had by definition only a single tag:</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby">	<span class="c1"># we would expect to use:</span>
+<span class="vi">@post</span><span class="p">.</span><span class="nf">tag</span><span class="p">.</span><span class="nf">build</span>
+	<span class="c1">#spoiler: this won't work</span>
+
+	<span class="c1">#instead, use:</span>
+<span class="vi">@post</span><span class="p">.</span><span class="nf">build_tag</span></code></pre></figure>
+
+<hr />
+
+<p>Thanks for reading! If you have any additional information on anything touched on above, leave a comment below.</p>
+</div>
+
+	<p class="meta">Posted on <span class="postdate">Aug 26, 2016</span></p>
+
+</article>
+
+   
+
+
+
+    </div>
+
+
+
+  </div>
+
+
+
+  <footer id="footer">
+    <p class="copyright">Copyright &copy; 2016 Crafting Code. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="http://www.webmaster-source.com">Matt Harzewski</a></p>
+  </footer>
+
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="/assets/js/jquery.mobilemenu.min.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      $('#sidebar nav ul').mobileMenu({'topOptionText': 'Menu', 'prependTo': '#sidebar nav'});
+    });
+  </script>
+
+
+
+</body>
+</html>
