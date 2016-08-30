@@ -56,10 +56,10 @@ This association between tags and posts makes adding tags to the form slightly m
 
 	<%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name %><br>
 
-    <%= f.fields_for :tags, @post.tags.build do |tags_attributes| %>
-      <%= tags_attributes.label :name  %>
-      <%= tags_attributes.text_field :name %>
-    <% end %>
+  <%= f.fields_for :tags, @post.tags.build do |tags_attributes| %>
+    <%= tags_attributes.label :name  %>
+    <%= tags_attributes.text_field :name %>
+  <% end %>
 
 	<%= f.submit %>
 <% end %>
@@ -82,7 +82,7 @@ The <code>new.html.erb</code> will have the following snippet of code:
 {% highlight ruby %}
 <%= f.fields_for :tags do |tags_attributes| %>
 	<%= tags_attributes.label :name  %>
-   <%= tags_attributes.text_field :name %>
+  <%= tags_attributes.text_field :name %>
 <% end %>
 {% endhighlight %}
 
@@ -91,7 +91,7 @@ The controller will have:
 {% highlight ruby %}
 def new
 	@post = Post.new
-   	3.times {@post.tags.build}
+  3.times {@post.tags.build}
 end
 {% endhighlight %}
 
