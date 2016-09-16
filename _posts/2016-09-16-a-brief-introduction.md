@@ -51,6 +51,7 @@ If you don't specify an alt attribute, the generated HTML from the image_tag wit
 
 ### Don't use tables solely for layout purposes
 From [Teach Access](https://teachaccess.github.io/tutorial/#/9):
+
 >Tables help screen readers process information presented in a tabular format. When information is presented using table markup, screen reader users can read down columns and across rows, and even hear column and row headings as they do so.
 
 If the information presented is intended to be read in a tabular manner -- use a table! If you're just using a grid for layout purposes, divs and CSS may be more appropriate.
