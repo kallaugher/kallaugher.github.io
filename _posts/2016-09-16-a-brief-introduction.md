@@ -58,7 +58,7 @@ If the information presented is intended to be read in a tabular manner -- use a
 
 Resources:
 ------
-- [WCAG 2.0 Guidelines](): the widely accepted guidelines (quote)
+- [WCAG 2.0 Guidelines](https://www.w3.org/WAI/intro/wcag): Web Content Accessibility Guidelines are the technical standard for accessibility.
 - [Teach Access](http://teachaccess.org/): Teach Access is an effort spearheaded by technology companies wishing to hire engineers, designers, and researchers who have been exposed to accessibility best practices
 - [Teach Access Tutorial](https://teachaccess.github.io/): This tutorial from Teach Access provides an excellent introduction to basic accessibility issues for the developers and designers responsible for making mobile apps and websites accessible.
 
