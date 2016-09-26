@@ -20,8 +20,8 @@
 
 
   <header id="header">
-    <h1><a href="/"><i class="icon-sun"></i> Crafting Code</a></h1>
-    <p>learning to code one error message at a time</p>
+    <h1 id="logo-header"><a href="/"><i class="icon-sun"></i><span id="logo-header">Crafting Code</span></a></h1>
+    <p><i>learning to code one error message at a time</i></p>
   </header>
 
 
@@ -46,6 +46,180 @@
 
     <div id="content">
       
+
+	<article class="post">
+
+		
+			<h1><a href="/2016/09/25/rest-and-spread/">The Rest and Spread Operators in ES6</a></h1>
+		
+
+		<div class="post-content"><p>The rest and spread operators are new features introduced in ES6. Before we dive into them, I’m going to give a quick introduction to destructuring features in ES6 — this context will make the two operators much more straightforward.</p>
+
+<h2 id="destructuring">Destructuring</h2>
+
+<p>Destructuring is a form of syntactic sugar in ES6 that makes easier and less verbose to extract data from objects and arrays in JavaScript. It uses non-strict <a href="http://dmitrysoshnikov.com/notes/pattern-matching/">pattern matching</a> for variable binding:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">simpleArray</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">];</span>
+<span class="kr">const</span> <span class="p">[</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">]</span> <span class="o">=</span> <span class="nx">simpleArray</span><span class="p">;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span> <span class="c1">//=&gt; 1</span></code></pre></figure>
+
+<p><code>simpleArray[0]</code> and <code>simpleArray[1]</code> are now bound to the variables <code>a</code> and <code>b</code>, even though the two arrays used do not match exactly. We can therefore choose to only bind variables to the properties that we care about.</p>
+
+<p>Note that in the simple example above, we ignored indexes 2 and 3 of <code>simpleArray</code>. If instead we wanted the last two indexes, we can use elision to skip elements in the array:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">simpleArray</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">];</span>
+<span class="kr">const</span> <span class="p">[,,</span> <span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">]</span> <span class="o">=</span> <span class="nx">simpleArray</span><span class="p">;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">a</span><span class="p">);</span> <span class="c1">//=&gt; 3</span></code></pre></figure>
+
+<p>Destructuring can be used similarly for an object:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">obj</span> <span class="o">=</span> <span class="p">{</span> <span class="na">a</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="na">b</span><span class="p">:</span> <span class="mi">2</span> <span class="p">};</span>
+<span class="kr">const</span> <span class="p">{</span><span class="nl">b</span><span class="p">:</span> <span class="nx">x</span><span class="p">}</span> <span class="o">=</span> <span class="nx">obj</span><span class="p">;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">x</span><span class="p">);</span> <span class="c1">//=&gt; 2</span></code></pre></figure>
+
+<p>With these features, we can use similar syntax for extracting data as we do for constructing objects, and extract multiple pieces of data at the same time.</p>
+
+<h2 id="the-rest-operator">The rest operator</h2>
+
+<p>The rest operator allows us to extract data and assign it to an array. For example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">simpleArray</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">];</span>
+<span class="kr">const</span> <span class="p">[</span><span class="nx">a</span><span class="p">,</span> <span class="p">...</span><span class="nx">b</span><span class="p">]</span> <span class="o">=</span> <span class="nx">simpleArray</span><span class="p">;</span>
+
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">b</span><span class="p">);</span> <span class="c1">//=&gt; 2,3,4</span></code></pre></figure>
+
+<p>The rest operator can also be used for functions taking an arbitrary number of parameters. For example:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">sayHello</span><span class="p">(</span><span class="nx">greeting</span><span class="p">,</span> <span class="p">...</span><span class="nx">names</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="nx">names</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="nx">name</span> <span class="o">=&gt;</span> <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">`</span><span class="nx">$</span><span class="p">{</span><span class="nx">greeting</span><span class="p">}</span> <span class="nx">$</span><span class="p">{</span><span class="nx">name</span><span class="p">}</span><span class="o">!</span><span class="err">`</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="nx">sayHello</span><span class="p">(</span><span class="s1">'Hi'</span><span class="p">,</span> <span class="s1">'Annie'</span><span class="p">,</span> <span class="s1">'John'</span><span class="p">,</span> <span class="s1">'Becca'</span><span class="p">);</span>
+
+<span class="c1">//=&gt;Hi Annie!</span>
+<span class="c1">//=&gt;Hi John!</span>
+<span class="c1">//=&gt;Hi Becca!</span></code></pre></figure>
+
+<p>Note that this can only be used once in each function parameter declaration, and must be the last argument.</p>
+
+<p>(The example above also uses the arrow function, another new feature of ES6.)</p>
+
+<h2 id="the-spread-operator">The spread operator</h2>
+
+<p>The spread operator is essentially the opposite of the rest operator. Instead of combining values into a single array, it expands arrays into multiple elements.</p>
+
+<p>This allows you to easily combine arrays:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">];</span>
+<span class="kd">let</span> <span class="nx">array2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="err">…</span><span class="nx">array</span><span class="p">];</span> <span class="c1">//=&gt; [1, 2, 3, 4, 5, 6]</span></code></pre></figure>
+
+<p>Or to use an array as arguments to a function:</p>
+
+<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">num1</span><span class="p">,</span> <span class="nx">num2</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+<span class="kd">let</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">];</span>
+<span class="nx">add</span><span class="p">(</span><span class="err">…</span><span class="nx">numbers</span><span class="p">);</span>
+
+<span class="c1">//previously you would have to use the &lt;code&gt;apply()&lt;/code&gt; method:</span>
+<span class="nx">add</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">numbers</span><span class="p">);</span></code></pre></figure>
+
+<h2 id="resources">Resources:</h2>
+
+<ul>
+  <li>A deeper look at destructuring: <a href="http://exploringjs.com/es6/ch_destructuring.html">Exploring Javascript</a></li>
+  <li>More on the rest operator:<a href="https://www.eventbrite.com/engineering/learning-es6-rest-spread-operators/">Learning ES6</a></li>
+  <li>More on rest and spread: <a href="https://ponyfoo.com/articles/es6-spread-and-butter-in-depth">Pony Foo</a></li>
+  <li>If you want to play around with these new features: <a href="http://www.es6fiddle.net/">ES6fiddle</a></li>
+</ul>
+</div>
+
+	</article>
+
+
+
+	<article class="post">
+
+		
+			<h1><a href="/2016/09/16/a-brief-introduction/">A Brief Introduction to Web Accessibility in Rails</a></h1>
+		
+
+		<div class="post-content"><h2 id="what-is-web-accessibility">What is Web Accessibility?</h2>
+<p>The Web Accessibility Initiative (WAI) provides the following definition:</p>
+
+<blockquote>
+  <p>Web accessibility means that people with disabilities can use the Web. More specifically, Web accessibility means that people with disabilities can perceive, understand, navigate, and interact with the Web, and that they can contribute to the Web. Web accessibility also benefits others, including older people with changing abilities due to aging.</p>
+</blockquote>
+
+<p>A large number of websites have significant barriers to access. These include (but are not limited to) unlabelled, or incorrectly labelled HTML tags, poorly designed navigation, and untagged images.</p>
+
+<h2 id="why-is-web-accessibility-important">Why is Web Accessibility important?</h2>
+
+<p>The internet is increasingly important to many different aspects of our lives. It provides access to an incredible range of information and opportunities. Employment, education, recreation, communication – all rely extensively on access to the internet.</p>
+
+<h2 id="accessibility-in-rails">Accessibility in Rails</h2>
+
+<p>Accessibility testing cannot be fully automated – it requires evaluation and testing by an expert. However, there are some useful automated tools that will give you a basic idea of some of the issues with your website.</p>
+
+<ul>
+  <li>
+    <p><a href="https://rubygems.org/gems/capybara-accessible/versions/0.2.1">capybara-accessible</a> is a gem used for automated accessibility testing. It runs an audit, using Capybara and Selenium, and running tests from the <a href="https://chrome.google.com/webstore/detail/accessibility-developer-t/fpkknkljclfencbdbgkenhalefipecmb?hl=en">Google Accessibility Developer Tools</a>.</p>
+  </li>
+  <li>
+    <p><a href="http://www.peterkrantz.com/raakt/wiki/">RAAKT</a> is another automated testing gem, that runs an audit to identify machine verifiable accessibility issues.</p>
+  </li>
+  <li>
+    <p><a href="">WAIAble</a> is a gem that facilitates making accessible forms in Rails. For more information on accessible forms, see the <a href="">WCAG 2.0 guidelines</a>.</p>
+  </li>
+</ul>
+
+<h2 id="simple-improvements">Simple Improvements</h2>
+
+<p>Here a couple of simple and easy examples of choices you can make to improve the accessibility of your app or website:</p>
+
+<h3 id="add-alt-text-to-images">Add alt-text to images</h3>
+
+<p>The alt attribute in an image tag should contain a concise description of the image. This attribute can be read by a screen reader, thereby conveying the meaning of an image.</p>
+
+<p>If you’re using raw HTML:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;img src="flatiron-logo.png" alt="Flatiron School Logo"/&gt;
+</code></pre>
+</div>
+
+<p>If you’re using the Rails <code>image_tag</code> helper:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>image_tag("flatiron-logo.png", alt: "Flatiron School Logo")
+</code></pre>
+</div>
+
+<p>If you don’t specify an alt attribute, the generated HTML from the image_tag with default to using the name of the image file, stripped and titleized.</p>
+
+<h3 id="dont-use-tables-solely-for-layout-purposes">Don’t use tables solely for layout purposes</h3>
+<p>From <a href="https://teachaccess.github.io/tutorial/#/9">Teach Access</a>:</p>
+
+<blockquote>
+  <p>Tables help screen readers process information presented in a tabular format. When information is presented using table markup, screen reader users can read down columns and across rows, and even hear column and row headings as they do so.</p>
+</blockquote>
+
+<p>If the information presented is intended to be read in a tabular manner – use a table! If you’re just using a grid for layout purposes, divs and CSS may be more appropriate.</p>
+
+<h2 id="resources">Resources:</h2>
+<ul>
+  <li><a href="https://www.w3.org/WAI/intro/wcag">WCAG 2.0 Guidelines</a>: Web Content Accessibility Guidelines are the technical standard for accessibility.</li>
+  <li><a href="http://teachaccess.org/">Teach Access</a>: Teach Access is an effort spearheaded by technology companies wishing to hire engineers, designers, and researchers who have been exposed to accessibility best practices</li>
+  <li><a href="https://teachaccess.github.io/">Teach Access Tutorial</a>: This tutorial from Teach Access provides an excellent introduction to basic accessibility issues for the developers and designers responsible for making mobile apps and websites accessible.</li>
+</ul>
+
+<h2 id="more-to-come">More to come!</h2>
+
+<p>This blog barely scratches the surface of the importance of web accessibility. I still have a lot to learn, and plan to write more in the future – please let me know in the comments below if you have any advice, or any suggestions on what to cover next!</p>
+</div>
+
+	</article>
+
+
 
 	<article class="post">
 
@@ -104,10 +278,10 @@
 
 	&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">collection_check_boxes</span> <span class="ss">:tag_ids</span><span class="p">,</span> <span class="no">Tag</span><span class="p">.</span><span class="nf">all</span><span class="p">,</span> <span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span> <span class="o">%&gt;&lt;</span><span class="n">br</span><span class="o">&gt;</span>
 
-    <span class="o">&lt;</span><span class="sx">%= f.fields_for :tags, @post.tags.build do |tags_attributes| %&gt;
-      &lt;%=</span> <span class="n">tags_attributes</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:name</span>  <span class="o">%&gt;</span>
-      <span class="o">&lt;</span><span class="sx">%= tags_attributes.text_field :name %&gt;
-    &lt;% end %&gt;
+  <span class="o">&lt;</span><span class="sx">%= f.fields_for :tags, @post.tags.build do |tags_attributes| %&gt;
+    &lt;%=</span> <span class="n">tags_attributes</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:name</span>  <span class="o">%&gt;</span>
+    <span class="o">&lt;</span><span class="sx">%= tags_attributes.text_field :name %&gt;
+  &lt;% end %&gt;
 
 	&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">submit</span> <span class="sx">%&gt;
 &lt;% end %&gt;</span></code></pre></figure>
@@ -126,14 +300,14 @@
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="o">&lt;</span><span class="sx">%= f.fields_for :tags do |tags_attributes| %&gt;
 	&lt;%=</span> <span class="n">tags_attributes</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:name</span>  <span class="o">%&gt;</span>
-   <span class="o">&lt;</span><span class="sx">%= tags_attributes.text_field :name %&gt;
+  <span class="o">&lt;</span><span class="sx">%= tags_attributes.text_field :name %&gt;
 &lt;% end %&gt;</span></code></pre></figure>
 
 <p>The controller will have:</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">new</span>
 	<span class="vi">@post</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">new</span>
-   	<span class="mi">3</span><span class="p">.</span><span class="nf">times</span> <span class="p">{</span><span class="vi">@post</span><span class="p">.</span><span class="nf">tags</span><span class="p">.</span><span class="nf">build</span><span class="p">}</span>
+  <span class="mi">3</span><span class="p">.</span><span class="nf">times</span> <span class="p">{</span><span class="vi">@post</span><span class="p">.</span><span class="nf">tags</span><span class="p">.</span><span class="nf">build</span><span class="p">}</span>
 <span class="k">end</span></code></pre></figure>
 
 <p>This will create blank form fields for our additional tags, and three correctly associated (but unsaved) tag objects, ready to be populated with the form answers.</p>

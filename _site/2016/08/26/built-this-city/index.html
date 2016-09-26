@@ -20,8 +20,8 @@
 
 
   <header id="header">
-    <h1><a href="/"><i class="icon-sun"></i> Crafting Code</a></h1>
-    <p>learning to code one error message at a time</p>
+    <h1 id="logo-header"><a href="/"><i class="icon-sun"></i><span id="logo-header">Crafting Code</span></a></h1>
+    <p><i>learning to code one error message at a time</i></p>
   </header>
 
 
@@ -102,10 +102,10 @@
 
 	&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">collection_check_boxes</span> <span class="ss">:tag_ids</span><span class="p">,</span> <span class="no">Tag</span><span class="p">.</span><span class="nf">all</span><span class="p">,</span> <span class="ss">:id</span><span class="p">,</span> <span class="ss">:name</span> <span class="o">%&gt;&lt;</span><span class="n">br</span><span class="o">&gt;</span>
 
-    <span class="o">&lt;</span><span class="sx">%= f.fields_for :tags, @post.tags.build do |tags_attributes| %&gt;
-      &lt;%=</span> <span class="n">tags_attributes</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:name</span>  <span class="o">%&gt;</span>
-      <span class="o">&lt;</span><span class="sx">%= tags_attributes.text_field :name %&gt;
-    &lt;% end %&gt;
+  <span class="o">&lt;</span><span class="sx">%= f.fields_for :tags, @post.tags.build do |tags_attributes| %&gt;
+    &lt;%=</span> <span class="n">tags_attributes</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:name</span>  <span class="o">%&gt;</span>
+    <span class="o">&lt;</span><span class="sx">%= tags_attributes.text_field :name %&gt;
+  &lt;% end %&gt;
 
 	&lt;%=</span> <span class="n">f</span><span class="p">.</span><span class="nf">submit</span> <span class="sx">%&gt;
 &lt;% end %&gt;</span></code></pre></figure>
@@ -124,14 +124,14 @@
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="o">&lt;</span><span class="sx">%= f.fields_for :tags do |tags_attributes| %&gt;
 	&lt;%=</span> <span class="n">tags_attributes</span><span class="p">.</span><span class="nf">label</span> <span class="ss">:name</span>  <span class="o">%&gt;</span>
-   <span class="o">&lt;</span><span class="sx">%= tags_attributes.text_field :name %&gt;
+  <span class="o">&lt;</span><span class="sx">%= tags_attributes.text_field :name %&gt;
 &lt;% end %&gt;</span></code></pre></figure>
 
 <p>The controller will have:</p>
 
 <figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">new</span>
 	<span class="vi">@post</span> <span class="o">=</span> <span class="no">Post</span><span class="p">.</span><span class="nf">new</span>
-   	<span class="mi">3</span><span class="p">.</span><span class="nf">times</span> <span class="p">{</span><span class="vi">@post</span><span class="p">.</span><span class="nf">tags</span><span class="p">.</span><span class="nf">build</span><span class="p">}</span>
+  <span class="mi">3</span><span class="p">.</span><span class="nf">times</span> <span class="p">{</span><span class="vi">@post</span><span class="p">.</span><span class="nf">tags</span><span class="p">.</span><span class="nf">build</span><span class="p">}</span>
 <span class="k">end</span></code></pre></figure>
 
 <p>This will create blank form fields for our additional tags, and three correctly associated (but unsaved) tag objects, ready to be populated with the form answers.</p>

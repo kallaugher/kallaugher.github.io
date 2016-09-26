@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <meta charset="UTF-8">
+  <title>A Brief Introduction to Web Accessibility in Rails</title>
+  <meta name="viewport" content="width=device-width">
+
+  <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="/assets/css/style.css" rel="stylesheet" />
+  <link href="/assets/css/colors-dark.css" rel="stylesheet" />
+
+</head>
+
+<body>
+
+
+
+  <header id="header">
+    <h1 id="logo-header"><a href="/"><i class="icon-sun"></i><span id="logo-header">Crafting Code</span></a></h1>
+    <p><i>learning to code one error message at a time</i></p>
+  </header>
+
+
+
+  <div id="page">
+
+
+
+    <div id="sidebar">
+      <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/archives">Archive</a></li>
+          <li><a href="/about">About</a></li>
+          <li><a href="http://twitter.com/kallaugher">Twitter</a></li>
+          <li><a href="/feed.xml">RSS Feed</a></li>
+        </ul>
+      </nav>
+    </div>
+
+
+
+    <div id="content">
+      <article class="post">
+
+	
+		<h1><a href="/2016/09/16/a-brief-introduction/">A Brief Introduction to Web Accessibility in Rails</a></h1>
+	
+
+	<div class="post-content"><h2 id="what-is-web-accessibility">What is Web Accessibility?</h2>
+<p>The Web Accessibility Initiative (WAI) provides the following definition:</p>
+
+<blockquote>
+  <p>Web accessibility means that people with disabilities can use the Web. More specifically, Web accessibility means that people with disabilities can perceive, understand, navigate, and interact with the Web, and that they can contribute to the Web. Web accessibility also benefits others, including older people with changing abilities due to aging.</p>
+</blockquote>
+
+<p>A large number of websites have significant barriers to access. These include (but are not limited to) unlabelled, or incorrectly labelled HTML tags, poorly designed navigation, and untagged images.</p>
+
+<h2 id="why-is-web-accessibility-important">Why is Web Accessibility important?</h2>
+
+<p>The internet is increasingly important to many different aspects of our lives. It provides access to an incredible range of information and opportunities. Employment, education, recreation, communication – all rely extensively on access to the internet.</p>
+
+<h2 id="accessibility-in-rails">Accessibility in Rails</h2>
+
+<p>Accessibility testing cannot be fully automated – it requires evaluation and testing by an expert. However, there are some useful automated tools that will give you a basic idea of some of the issues with your website.</p>
+
+<ul>
+  <li>
+    <p><a href="https://rubygems.org/gems/capybara-accessible/versions/0.2.1">capybara-accessible</a> is a gem used for automated accessibility testing. It runs an audit, using Capybara and Selenium, and running tests from the <a href="https://chrome.google.com/webstore/detail/accessibility-developer-t/fpkknkljclfencbdbgkenhalefipecmb?hl=en">Google Accessibility Developer Tools</a>.</p>
+  </li>
+  <li>
+    <p><a href="http://www.peterkrantz.com/raakt/wiki/">RAAKT</a> is another automated testing gem, that runs an audit to identify machine verifiable accessibility issues.</p>
+  </li>
+  <li>
+    <p><a href="">WAIAble</a> is a gem that facilitates making accessible forms in Rails. For more information on accessible forms, see the <a href="">WCAG 2.0 guidelines</a>.</p>
+  </li>
+</ul>
+
+<h2 id="simple-improvements">Simple Improvements</h2>
+
+<p>Here a couple of simple and easy examples of choices you can make to improve the accessibility of your app or website:</p>
+
+<h3 id="add-alt-text-to-images">Add alt-text to images</h3>
+
+<p>The alt attribute in an image tag should contain a concise description of the image. This attribute can be read by a screen reader, thereby conveying the meaning of an image.</p>
+
+<p>If you’re using raw HTML:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>&lt;img src="flatiron-logo.png" alt="Flatiron School Logo"/&gt;
+</code></pre>
+</div>
+
+<p>If you’re using the Rails <code>image_tag</code> helper:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>image_tag("flatiron-logo.png", alt: "Flatiron School Logo")
+</code></pre>
+</div>
+
+<p>If you don’t specify an alt attribute, the generated HTML from the image_tag with default to using the name of the image file, stripped and titleized.</p>
+
+<h3 id="dont-use-tables-solely-for-layout-purposes">Don’t use tables solely for layout purposes</h3>
+<p>From <a href="https://teachaccess.github.io/tutorial/#/9">Teach Access</a>:</p>
+
+<blockquote>
+  <p>Tables help screen readers process information presented in a tabular format. When information is presented using table markup, screen reader users can read down columns and across rows, and even hear column and row headings as they do so.</p>
+</blockquote>
+
+<p>If the information presented is intended to be read in a tabular manner – use a table! If you’re just using a grid for layout purposes, divs and CSS may be more appropriate.</p>
+
+<h2 id="resources">Resources:</h2>
+<ul>
+  <li><a href="https://www.w3.org/WAI/intro/wcag">WCAG 2.0 Guidelines</a>: Web Content Accessibility Guidelines are the technical standard for accessibility.</li>
+  <li><a href="http://teachaccess.org/">Teach Access</a>: Teach Access is an effort spearheaded by technology companies wishing to hire engineers, designers, and researchers who have been exposed to accessibility best practices</li>
+  <li><a href="https://teachaccess.github.io/">Teach Access Tutorial</a>: This tutorial from Teach Access provides an excellent introduction to basic accessibility issues for the developers and designers responsible for making mobile apps and websites accessible.</li>
+</ul>
+
+<h2 id="more-to-come">More to come!</h2>
+
+<p>This blog barely scratches the surface of the importance of web accessibility. I still have a lot to learn, and plan to write more in the future – please let me know in the comments below if you have any advice, or any suggestions on what to cover next!</p>
+</div>
+
+	<p class="meta">Posted on <span class="postdate">Sep 16, 2016</span></p>
+
+</article>
+
+   
+
+
+
+    </div>
+
+
+
+  </div>
+
+
+
+  <footer id="footer">
+    <p class="copyright">Copyright &copy; 2016 Crafting Code. Powered by <a href="http://jekyllrb.com">Jekyll</a>, theme by <a href="http://www.webmaster-source.com">Matt Harzewski</a></p>
+  </footer>
+
+
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+  <script src="/assets/js/jquery.mobilemenu.min.js"></script>
+
+  <script>
+    $(document).ready(function(){
+      $('#sidebar nav ul').mobileMenu({'topOptionText': 'Menu', 'prependTo': '#sidebar nav'});
+    });
+  </script>
+
+
+
+</body>
+</html>
