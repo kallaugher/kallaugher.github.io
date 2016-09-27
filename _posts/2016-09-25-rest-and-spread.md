@@ -6,7 +6,7 @@ categories: code, javascript
 ---
 
 
-The rest and spread operators are new features introduced in ES6. Before we dive into them, I’m going to give a quick introduction to destructuring features in ES6 — this context will make the two operators much more straightforward.
+The rest and spread operators are new features introduced in ES6. Before we dive into them, I’m going to give a quick introduction to destructuring features in ES6 — this context will make the two operators much more straightforward to understand.
 
 Destructuring
 --------
@@ -89,7 +89,7 @@ Or to use an array as arguments to a function:
 {% highlight javascript %}
 function add(num1, num2) { }
 let numbers = [1, 2];
-add(…numbers);
+add(...numbers);
 
 //previously you would have to use the <code>apply()</code> method:
 add.apply(null, numbers);
