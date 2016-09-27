@@ -5,13 +5,13 @@
     <description>learning to code one error message at a time</description>
     <link>http://kallaugher.github.io/</link>
     <atom:link href="http://kallaugher.github.io/feed.xml" rel="self" type="application/rss+xml"/>
-    <pubDate>Mon, 26 Sep 2016 00:19:26 -0400</pubDate>
-    <lastBuildDate>Mon, 26 Sep 2016 00:19:26 -0400</lastBuildDate>
+    <pubDate>Tue, 27 Sep 2016 12:54:29 -0400</pubDate>
+    <lastBuildDate>Tue, 27 Sep 2016 12:54:29 -0400</lastBuildDate>
     <generator>Jekyll v3.1.6</generator>
     
       <item>
         <title>The Rest and Spread Operators in ES6</title>
-        <description>&lt;p&gt;The rest and spread operators are new features introduced in ES6. Before we dive into them, I’m going to give a quick introduction to destructuring features in ES6 — this context will make the two operators much more straightforward.&lt;/p&gt;
+        <description>&lt;p&gt;The rest and spread operators are new features introduced in ES6. Before we dive into them, I’m going to give a quick introduction to destructuring features in ES6 — this context will make the two operators much more straightforward to understand.&lt;/p&gt;
 
 &lt;h2 id=&quot;destructuring&quot;&gt;Destructuring&lt;/h2&gt;
 
@@ -78,7 +78,7 @@
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;num1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;num2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
 &lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;numbers&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;2&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;];&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;…&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(...&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
 
 &lt;span class=&quot;c1&quot;&gt;//previously you would have to use the &amp;lt;code&amp;gt;apply()&amp;lt;/code&amp;gt; method:&lt;/span&gt;
 &lt;span class=&quot;nx&quot;&gt;add&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;apply&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;null&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;numbers&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;

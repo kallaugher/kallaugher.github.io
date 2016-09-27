@@ -292,9 +292,8 @@ img.center {
          url('../fonts/SEASRN__-webfont.svg#seasideresortnfregular') format('svg');
     font-weight: normal;
     font-style: normal;
-
 }
 
-.logo-header {
+#logo-header {
 	font-family: 'seasideresortnfregular';
 }
