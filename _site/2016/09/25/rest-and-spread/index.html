@@ -51,7 +51,7 @@
 		<h1><a href="/2016/09/25/rest-and-spread/">The Rest and Spread Operators in ES6</a></h1>
 	
 
-	<div class="post-content"><p>The rest and spread operators are new features introduced in ES6. Before we dive into them, I’m going to give a quick introduction to destructuring features in ES6 — this context will make the two operators much more straightforward.</p>
+	<div class="post-content"><p>The rest and spread operators are new features introduced in ES6. Before we dive into them, I’m going to give a quick introduction to destructuring features in ES6 — this context will make the two operators much more straightforward to understand.</p>
 
 <h2 id="destructuring">Destructuring</h2>
 
@@ -112,13 +112,13 @@
 <p>This allows you to easily combine arrays:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">array</span> <span class="o">=</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">];</span>
-<span class="kd">let</span> <span class="nx">array2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="err">…</span><span class="nx">array</span><span class="p">];</span> <span class="c1">//=&gt; [1, 2, 3, 4, 5, 6]</span></code></pre></figure>
+<span class="kd">let</span> <span class="nx">array2</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="p">...</span><span class="nx">array</span><span class="p">];</span> <span class="c1">//=&gt; [1, 2, 3, 4, 5, 6]</span></code></pre></figure>
 
 <p>Or to use an array as arguments to a function:</p>
 
 <figure class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">add</span><span class="p">(</span><span class="nx">num1</span><span class="p">,</span> <span class="nx">num2</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
 <span class="kd">let</span> <span class="nx">numbers</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">];</span>
-<span class="nx">add</span><span class="p">(</span><span class="err">…</span><span class="nx">numbers</span><span class="p">);</span>
+<span class="nx">add</span><span class="p">(...</span><span class="nx">numbers</span><span class="p">);</span>
 
 <span class="c1">//previously you would have to use the &lt;code&gt;apply()&lt;/code&gt; method:</span>
 <span class="nx">add</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="kc">null</span><span class="p">,</span> <span class="nx">numbers</span><span class="p">);</span></code></pre></figure>

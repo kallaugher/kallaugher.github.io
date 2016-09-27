@@ -81,7 +81,7 @@ This allows you to easily combine arrays:
 
 {% highlight javascript %}
 let array = [4, 5, 6];
-let array2 = [1, 2, 3, …array]; //=> [1, 2, 3, 4, 5, 6]
+let array2 = [1, 2, 3, ...array]; //=> [1, 2, 3, 4, 5, 6]
 {% endhighlight %}
 
 Or to use an array as arguments to a function:
